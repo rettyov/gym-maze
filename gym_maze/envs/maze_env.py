@@ -1,8 +1,8 @@
 import numpy as np
 
-import gym
-from gym import error, spaces, utils
-from gym.utils import seeding
+import gymnasium as gym
+from gymnasium import error, spaces, utils
+from gymnasium.utils import seeding
 from gym_maze.envs.maze_view_2d import MazeView2D
 
 
@@ -78,23 +78,27 @@ class MazeEnv(gym.Env):
 
         if np.array_equal(self.maze_view.robot, self.maze_view.goal):
             reward = 1
-            done = True
+            terminated = True
         else:
             reward = -0.1/(self.maze_size[0]*self.maze_size[1])
-            done = False
+            terminated = False
 
         self.state = self.maze_view.robot
 
+        truncated = False
         info = {}
 
-        return self.state, reward, done, info
+        return self.state, reward, terminated, truncated, info
 
     def reset(self):
         self.maze_view.reset_robot()
         self.state = np.zeros(2)
         self.steps_beyond_done = None
         self.done = False
-        return self.state
+
+        info = {}
+
+        return self.state, info
 
     def is_game_over(self):
         return self.maze_view.game_over
