@@ -8,7 +8,7 @@ from gym_maze.envs.maze_view_2d import MazeView2D
 
 class MazeEnv(gym.Env):
     metadata = {
-        "render.modes": ["human", "rgb_array"],
+        "render_modes": ["human", "rgb_array"],
     }
 
     ACTION = ["N", "S", "E", "W"]
@@ -71,7 +71,7 @@ class MazeEnv(gym.Env):
         return [seed]
 
     def step(self, action):
-        if isinstance(action, int):
+        if isinstance(action, (int, np.int64)):
             self.maze_view.move_robot(self.ACTION[action])
         else:
             self.maze_view.move_robot(action)
